@@ -66,6 +66,17 @@ def create_app() -> FastAPI:
         """Return a simple liveness response."""
         return {"message": "Healthy"}
 
+    @app.get(
+        "/healthz",
+        tags=["Health"],
+        summary="Health check (healthz)",
+        description="Alias health check endpoint (commonly used by deployments as HEALTHCHECK_PATH).",
+        operation_id="health_check_healthz",
+    )
+    def health_check_healthz():
+        """Return a simple liveness response (alias for `/`)."""
+        return {"message": "Healthy"}
+
     return app
 
 

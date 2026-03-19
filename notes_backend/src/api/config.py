@@ -98,7 +98,10 @@ def get_settings() -> Settings:
 
     expires_min = int(os.getenv("JWT_ACCESS_TOKEN_EXPIRE_MINUTES", "10080"))  # 7 days
 
-    cors_origins_env = os.getenv("CORS_ALLOW_ORIGINS", "http://localhost:3000")
+    cors_origins_env = os.getenv("CORS_ALLOW_ORIGINS") or os.getenv("ALLOWED_ORIGINS")
+    if not cors_origins_env:
+        # Convenience: allow using FRONTEND_URL alone in simple deployments.
+        cors_origins_env = os.getenv("FRONTEND_URL") or "http://localhost:3000"
     cors_allow_origins = _parse_csv(cors_origins_env) if cors_origins_env else []
 
     db_auto_create = os.getenv("DB_AUTO_CREATE", "false").lower() in {"1", "true", "yes"}
